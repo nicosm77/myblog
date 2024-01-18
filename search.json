@@ -14,13 +14,6 @@
     "text": "This is the first post in a Quarto blog. Welcome! This is Nico TestingW!!!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
   },
   {
-    "objectID": "posts/bruin/bruin.html",
-    "href": "posts/bruin/bruin.html",
-    "title": "Creating posts",
-    "section": "",
-    "text": "import numpy as np\nimport matplotlib.pyplot as plt\n\nr = np.arange(0, 2, 0.01)\ntheta = 2 * np.pi * r\nfig, ax = plt.subplots(\n  subplot_kw = {'projection': 'polar'} \n)\nax.plot(theta, r)\nax.set_rticks([0.5, 1, 1.5, 2])\nax.grid(True)\nplt.show()"
-  },
-  {
     "objectID": "posts/post-with-code/index.html",
     "href": "posts/post-with-code/index.html",
     "title": "Post With Code",
@@ -28,10 +21,52 @@
     "text": "This is a post with executable code."
   },
   {
+    "objectID": "posts/bruin/bruin.html",
+    "href": "posts/bruin/bruin.html",
+    "title": "Bruin",
+    "section": "",
+    "text": "import numpy as np\nimport matplotlib.pyplot as plt\n\nr = np.arange(0, 2, 0.01)\ntheta = 2 * np.pi * r\nfig, ax = plt.subplots(\n  subplot_kw = {'projection': 'polar'} \n)\nax.plot(theta, r)\nax.set_rticks([0.5, 1, 1.5, 2])\nax.grid(True)\nplt.show()"
+  },
+  {
+    "objectID": "posts/posts/index.html",
+    "href": "posts/posts/index.html",
+    "title": "HW 0",
+    "section": "",
+    "text": "Import all necessary packages, and import the Palmer Penguins data set. For this assignment, we use the pandas package and the matplotlib.pyplot package.\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\nurl = \"https://raw.githubusercontent.com/pic16b-ucla/24W/main/datasets/palmer_penguins.csv\"\ndf = pd.read_csv(url)"
+  },
+  {
+    "objectID": "posts/posts/index.html#step-1-importing",
+    "href": "posts/posts/index.html#step-1-importing",
+    "title": "HW 0",
+    "section": "",
+    "text": "Import all necessary packages, and import the Palmer Penguins data set. For this assignment, we use the pandas package and the matplotlib.pyplot package.\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\nurl = \"https://raw.githubusercontent.com/pic16b-ucla/24W/main/datasets/palmer_penguins.csv\"\ndf = pd.read_csv(url)"
+  },
+  {
+    "objectID": "posts/posts/index.html#step-2-previewing-data",
+    "href": "posts/posts/index.html#step-2-previewing-data",
+    "title": "HW 0",
+    "section": "Step 2: Previewing Data",
+    "text": "Step 2: Previewing Data\nPreview the data frame to see the column names and better understand what we’re working with.\n\ndf\n\n\n\n\n\n\n\n\nstudyName\nSample Number\nSpecies\nRegion\nIsland\nStage\nIndividual ID\nClutch Completion\nDate Egg\nCulmen Length (mm)\nCulmen Depth (mm)\nFlipper Length (mm)\nBody Mass (g)\nSex\nDelta 15 N (o/oo)\nDelta 13 C (o/oo)\nComments\n\n\n\n\n0\nPAL0708\n1\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nTorgersen\nAdult, 1 Egg Stage\nN1A1\nYes\n11/11/07\n39.1\n18.7\n181.0\n3750.0\nMALE\nNaN\nNaN\nNot enough blood for isotopes.\n\n\n1\nPAL0708\n2\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nTorgersen\nAdult, 1 Egg Stage\nN1A2\nYes\n11/11/07\n39.5\n17.4\n186.0\n3800.0\nFEMALE\n8.94956\n-24.69454\nNaN\n\n\n2\nPAL0708\n3\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nTorgersen\nAdult, 1 Egg Stage\nN2A1\nYes\n11/16/07\n40.3\n18.0\n195.0\n3250.0\nFEMALE\n8.36821\n-25.33302\nNaN\n\n\n3\nPAL0708\n4\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nTorgersen\nAdult, 1 Egg Stage\nN2A2\nYes\n11/16/07\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nAdult not sampled.\n\n\n4\nPAL0708\n5\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nTorgersen\nAdult, 1 Egg Stage\nN3A1\nYes\n11/16/07\n36.7\n19.3\n193.0\n3450.0\nFEMALE\n8.76651\n-25.32426\nNaN\n\n\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n\n\n339\nPAL0910\n120\nGentoo penguin (Pygoscelis papua)\nAnvers\nBiscoe\nAdult, 1 Egg Stage\nN38A2\nNo\n12/1/09\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\n\n\n340\nPAL0910\n121\nGentoo penguin (Pygoscelis papua)\nAnvers\nBiscoe\nAdult, 1 Egg Stage\nN39A1\nYes\n11/22/09\n46.8\n14.3\n215.0\n4850.0\nFEMALE\n8.41151\n-26.13832\nNaN\n\n\n341\nPAL0910\n122\nGentoo penguin (Pygoscelis papua)\nAnvers\nBiscoe\nAdult, 1 Egg Stage\nN39A2\nYes\n11/22/09\n50.4\n15.7\n222.0\n5750.0\nMALE\n8.30166\n-26.04117\nNaN\n\n\n342\nPAL0910\n123\nGentoo penguin (Pygoscelis papua)\nAnvers\nBiscoe\nAdult, 1 Egg Stage\nN43A1\nYes\n11/22/09\n45.2\n14.8\n212.0\n5200.0\nFEMALE\n8.24246\n-26.11969\nNaN\n\n\n343\nPAL0910\n124\nGentoo penguin (Pygoscelis papua)\nAnvers\nBiscoe\nAdult, 1 Egg Stage\nN43A2\nYes\n11/22/09\n49.9\n16.1\n213.0\n5400.0\nMALE\n8.36390\n-26.15531\nNaN\n\n\n\n\n344 rows × 17 columns"
+  },
+  {
+    "objectID": "posts/posts/index.html#step-3-breaking-up-the-data",
+    "href": "posts/posts/index.html#step-3-breaking-up-the-data",
+    "title": "HW 0",
+    "section": "Step 3: Breaking up the data",
+    "text": "Step 3: Breaking up the data\nWe see in the data there are three types of penguins: Adelie, Gentoo, and Chinstrap. We also see there’s data on each penguins flipper length and body mass.\nWe can build a scatterplot to see the relationship between the penguin’s flipper lenght and body mass. We can take this one step further and split this scatterplot up into the three types of penguins.\nLet’s start by breaking up the data frame into three smaller data frames. Each data frame will take all the entries pretaining to an individual species of penguin. Therefore, we will have 3 new data frames (since there are three species of penguins).\n\n# breaking up the data to be with certain species\nadelie = df[df[\"Species\"] == \"Adelie Penguin (Pygoscelis adeliae)\"]\ngentoo = df[df[\"Species\"] == \"Gentoo penguin (Pygoscelis papua)\"]\nchinstrap = df[df[\"Species\"] == \"Chinstrap penguin (Pygoscelis antarctica)\"]\n\nNow, we can preview the new data frame pretaining to the Adelie species.\n\nadelie\n\n\n\n\n\n\n\n\nstudyName\nSample Number\nSpecies\nRegion\nIsland\nStage\nIndividual ID\nClutch Completion\nDate Egg\nCulmen Length (mm)\nCulmen Depth (mm)\nFlipper Length (mm)\nBody Mass (g)\nSex\nDelta 15 N (o/oo)\nDelta 13 C (o/oo)\nComments\n\n\n\n\n0\nPAL0708\n1\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nTorgersen\nAdult, 1 Egg Stage\nN1A1\nYes\n11/11/07\n39.1\n18.7\n181.0\n3750.0\nMALE\nNaN\nNaN\nNot enough blood for isotopes.\n\n\n1\nPAL0708\n2\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nTorgersen\nAdult, 1 Egg Stage\nN1A2\nYes\n11/11/07\n39.5\n17.4\n186.0\n3800.0\nFEMALE\n8.94956\n-24.69454\nNaN\n\n\n2\nPAL0708\n3\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nTorgersen\nAdult, 1 Egg Stage\nN2A1\nYes\n11/16/07\n40.3\n18.0\n195.0\n3250.0\nFEMALE\n8.36821\n-25.33302\nNaN\n\n\n3\nPAL0708\n4\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nTorgersen\nAdult, 1 Egg Stage\nN2A2\nYes\n11/16/07\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nNaN\nAdult not sampled.\n\n\n4\nPAL0708\n5\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nTorgersen\nAdult, 1 Egg Stage\nN3A1\nYes\n11/16/07\n36.7\n19.3\n193.0\n3450.0\nFEMALE\n8.76651\n-25.32426\nNaN\n\n\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n...\n\n\n147\nPAL0910\n148\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nDream\nAdult, 1 Egg Stage\nN83A2\nYes\n11/13/09\n36.6\n18.4\n184.0\n3475.0\nFEMALE\n8.68744\n-25.83060\nNaN\n\n\n148\nPAL0910\n149\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nDream\nAdult, 1 Egg Stage\nN84A1\nYes\n11/17/09\n36.0\n17.8\n195.0\n3450.0\nFEMALE\n8.94332\n-25.79189\nNaN\n\n\n149\nPAL0910\n150\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nDream\nAdult, 1 Egg Stage\nN84A2\nYes\n11/17/09\n37.8\n18.1\n193.0\n3750.0\nMALE\n8.97533\n-26.03495\nNaN\n\n\n150\nPAL0910\n151\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nDream\nAdult, 1 Egg Stage\nN85A1\nYes\n11/17/09\n36.0\n17.1\n187.0\n3700.0\nFEMALE\n8.93465\n-26.07081\nNaN\n\n\n151\nPAL0910\n152\nAdelie Penguin (Pygoscelis adeliae)\nAnvers\nDream\nAdult, 1 Egg Stage\nN85A2\nYes\n11/17/09\n41.5\n18.5\n201.0\n4000.0\nMALE\n8.89640\n-26.06967\nNaN\n\n\n\n\n152 rows × 17 columns"
+  },
+  {
+    "objectID": "posts/posts/index.html#step-4-building-the-scatterplot",
+    "href": "posts/posts/index.html#step-4-building-the-scatterplot",
+    "title": "HW 0",
+    "section": "Step 4: Building the Scatterplot",
+    "text": "Step 4: Building the Scatterplot\nNow that we have our individual data frames, we can build our scatterplot using the plt.scatter command. We will index the data within the columns “Body Mass (g)” and “Flipper Length (mm)” for our x and y axis. We will color code each speciesof penguin as well.\nWe can also add x and y axis labels, a plot title, and a legend.\n\nplt.scatter(adelie['Body Mass (g)'], adelie['Flipper Length (mm)'], marker='o', linestyle='', color='b', label='Adelie Penguin')\nplt.scatter(gentoo['Body Mass (g)'], gentoo['Flipper Length (mm)'], marker='o', linestyle='', color='red', label='Gentoo Penguin')\nplt.scatter(chinstrap['Body Mass (g)'], chinstrap['Flipper Length (mm)'], marker='o', linestyle='', color='green', label='Chinstrap Penguin')\n\n\nplt.xlabel('Body Mass (grams)')\nplt.ylabel('Flipper Length (mm)')\nplt.title('Plotting Flipper Length vs Body Mass')\n\n\nplt.legend()"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "myblog2",
     "section": "",
-    "text": "Post With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nJan 11, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 8, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\n\n\n\n\n\n\nCreating posts\n\n\n\n\n\n\nweek 0\n\n\nexample\n\n\n\n\n\n\n\n\n\nDec 23, 2023\n\n\nSeyoon\n\n\n\n\n\n\nNo matching items"
+    "text": "HW 0\n\n\n\n\n\n\nweek 0\n\n\nHomework\n\n\n\n\n\n\n\n\n\nJan 16, 2024\n\n\nNico Morrone\n\n\n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nJan 11, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nJan 8, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\n\n\n\n\n\n\nBruin\n\n\n\n\n\n\nweek 0\n\n\nexample\n\n\n\n\n\n\n\n\n\nJan 11, 2023\n\n\nNico\n\n\n\n\n\n\nNo matching items"
   }
 ]
