@@ -195,7 +195,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-1" class="level3">
 <h3 class="anchored" data-anchor-id="step-1">Step 1:</h3>
 <p>import all necessary packages</p>
-<div id="e08ce075-a5bb-4dbb-b92a-44a4f94e094e" class="cell" data-tags="[]" data-execution_count="49">
+<div id="e08ce075-a5bb-4dbb-b92a-44a4f94e094e" class="cell" data-tags="[]" data-execution_count="97">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -214,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Import the csv files: temps, countries, and stations</p></li>
 <li><p>Then, we will use the prepare_df function to reorganize the temps csv file. We can preview the temps file after we run it through the function to see the changes.</p></li>
 </ol>
-<div id="bbe52820-b1dd-4346-997c-444e1c5fb110" class="cell" data-tags="[]" data-execution_count="50">
+<div id="bbe52820-b1dd-4346-997c-444e1c5fb110" class="cell" data-tags="[]" data-execution_count="98">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>temps <span class="op">=</span> pd.read_csv(<span class="st">"temps.csv"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>countries_url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/mysociety/gaze/master/data/fips-10-4-to-iso-country-codes.csv"</span></span>
@@ -222,20 +222,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>stations <span class="op">=</span> pd.read_csv(<span class="st">"station-metadata.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="8f5e6bdb-4b4d-4f3f-8a99-221e1887d1b2" class="cell" data-tags="[]" data-execution_count="51">
+<div id="8f5e6bdb-4b4d-4f3f-8a99-221e1887d1b2" class="cell" data-tags="[]" data-execution_count="99">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prepare_df(df):</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.set_index(keys<span class="op">=</span>[<span class="st">"ID"</span>, <span class="st">"Year"</span>])</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.stack()</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.reset_index()</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.rename(columns <span class="op">=</span> {<span class="st">"level_2"</span>  : <span class="st">"Month"</span> , <span class="dv">0</span> : <span class="st">"Temp"</span>})</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"Month"</span>] <span class="op">=</span> df[<span class="st">"Month"</span>].<span class="bu">str</span>[<span class="dv">5</span>:].astype(<span class="bu">int</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"Temp"</span>]  <span class="op">=</span> df[<span class="st">"Temp"</span>] <span class="op">/</span> <span class="dv">100</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Prepares the inputed dataframe by reorganzing the data.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">    - df: inputted dataframe containing temperature data.</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">    df: New dataframe with columns 'ID', 'Year', 'Month', and 'Temp'.</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">                  The 'Month' column represents the month in integer form, and the 'Temp' column</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">                  represents the temperature values</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.set_index(keys<span class="op">=</span>[<span class="st">"ID"</span>, <span class="st">"Year"</span>])</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.stack()</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.reset_index()</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.rename(columns <span class="op">=</span> {<span class="st">"level_2"</span>  : <span class="st">"Month"</span> , <span class="dv">0</span> : <span class="st">"Temp"</span>})</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"Month"</span>] <span class="op">=</span> df[<span class="st">"Month"</span>].<span class="bu">str</span>[<span class="dv">5</span>:].astype(<span class="bu">int</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"Temp"</span>]  <span class="op">=</span> df[<span class="st">"Temp"</span>] <span class="op">/</span> <span class="dv">100</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="f2ae6d66-b319-4205-870e-00a3eb035549" class="cell" data-tags="[]" data-execution_count="52">
+<div id="f2ae6d66-b319-4205-870e-00a3eb035549" class="cell" data-tags="[]" data-execution_count="177">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>temps <span class="op">=</span> prepare_df(temps)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>temps</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="52">
+<div class="cell-output cell-output-display" data-execution_count="177">
 <div>
 
 
@@ -341,13 +354,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Using SQLITE, create a data base called “temps.db”. We link the temps file to “temperatures” We link the stations file to “stations” We link the countries file to “countries”</p>
 <p>Now all three data sets live within our temps.db data base</p>
 <p>We make sure to close our connection to the database once we created it.</p>
-<div id="6612a604-f7ca-4cf8-84e6-05c0e886cafd" class="cell" data-tags="[]" data-execution_count="53">
+<div id="6612a604-f7ca-4cf8-84e6-05c0e886cafd" class="cell" data-tags="[]" data-execution_count="101">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> sqlite3.<span class="ex">connect</span>(<span class="st">"temps.db"</span>) <span class="im">as</span> conn:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    temps.to_sql(<span class="st">"temperatures"</span>, conn, if_exists <span class="op">=</span> <span class="st">"replace"</span>, index <span class="op">=</span> <span class="va">False</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    stations.to_sql(<span class="st">"stations"</span>, conn, if_exists <span class="op">=</span> <span class="st">"replace"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    countries.to_sql(<span class="st">"countries"</span>, conn, if_exists <span class="op">=</span> <span class="st">"replace"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="1e3b4c31-f6bf-489f-a43f-75ff82fde011" class="cell" data-tags="[]" data-execution_count="54">
+<div id="1e3b4c31-f6bf-489f-a43f-75ff82fde011" class="cell" data-tags="[]" data-execution_count="102">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>conn.close()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#closes connection</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -358,16 +371,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>we use SELECT to select the specified columns, JOIN to put the columns from multiple tables next to one another, and WHERE to specify conditions using the parameters</li>
 </ul>
-<div id="e999d520-0041-4202-905c-e644e8ac8e1c" class="cell" data-tags="[]" data-execution_count="55">
+<div id="e999d520-0041-4202-905c-e644e8ac8e1c" class="cell" data-tags="[]" data-execution_count="79">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> climate_database <span class="im">import</span> query_climate_database</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> inspect</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(inspect.getsource(query_climate_database))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>def query_climate_database(db_file, country, year_begin, year_end, month):
+    """
+    Query a climate database to retrieve temperature data for a specific country, year range, and month.
+
+    Parameters:
+    - db_file: database file.
+    - country: name of the country for which climate data is requested.
+    - year_begin: starting year of the desired temperature data.
+    - year_end: ending year of the desired temperature data.
+    - month: month for which temperature data is requested.
+
+    Returns:
+    pd: dataframe containing weather station information ('NAME', 'LATITUDE', 'LONGITUDE', 'COUNTRY'),
+                  along with temperature data ('YEAR', 'MONTH', 'ID', 'TEMP')
+                  
+    """
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
-    
-    
     #cursor.execute(f'SELECT C.Name, SUBSTR(T.ID,1,2) FROM temperatures T LEFT JOIN countries C on T."FIPS 10-4" = C."FIPS 10-4" WHERE C.Name="{country}"')
     cursor.execute(f'SELECT C.Name, SUBSTR(T.ID,1,2) FROM temperatures T JOIN countries C WHERE C.Name="{country}" AND SUBSTR(T.ID,1,2) = C."FIPS 10-4"')  
 
@@ -411,7 +437,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
     conn.close()
-
     return reset2
 </code></pre>
 </div>
@@ -419,10 +444,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>now test our function</li>
 </ul>
-<div id="4b8b749c-4024-4393-8504-b42bc318a40c" class="cell" data-tags="[]" data-execution_count="56">
+<div id="4b8b749c-4024-4393-8504-b42bc318a40c" class="cell" data-tags="[]" data-execution_count="80">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> query_climate_database(<span class="st">"temps.db"</span>, <span class="st">"India"</span>, <span class="dv">1980</span>, <span class="dv">2020</span>, <span class="dv">1</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="56">
+<div class="cell-output cell-output-display" data-execution_count="80">
 <div>
 
 
@@ -565,63 +590,77 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We are going to answer this question with our plot: How does the average yearly change in temperature vary within a given country?</p>
 <p>To do this, we will write a function called temperature_coefficient_plot that takes 6 parameters: db_file, country, year_begin, year_end, month, min_obs, **kwargs - db_file is the name of our database file. In this case, its “temps.db” - country is the name of the country we are inquiring about. - year_begin is the beginning of the range of years we are inquiring about - year_end is the ending of the range of years we are inquiring about - month is the month number we are inquring about (example: January is 1) - min_obs is the minimum number of observations a station needs to have reported to be included in our graph</p>
 <p>To measure the average yearly change, we will have to use linear regression to create a model and find the coefficient representing the estimated yearly increase. We will then have to put this into a data frame, find each stations latitude and longitude, and plot it geographically.</p>
-<div id="ed9aeb55-b9f2-4294-8dd5-f0b2a9a2c7cd" class="cell" data-tags="[]" data-execution_count="61">
+<div id="ed9aeb55-b9f2-4294-8dd5-f0b2a9a2c7cd" class="cell" data-tags="[]" data-execution_count="89">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> temperature_coefficient_plot(db_file, country, year_begin, year_end, month, min_obs, <span class="op">**</span>kwargs):</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> estimate_yearly_increase(df):</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        X <span class="op">=</span> df[[<span class="st">"YEAR"</span>]]</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> df[<span class="st">"TEMP"</span>]</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Estimates the yearly increase in temperature based on a linear regression model.</span></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a linear regression model</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        model <span class="op">=</span> LinearRegression()</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">    - df: inputted dataframae containing temperature data with columns 'YEAR' and 'TEMP'.</span></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Fit the model</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        model.fit(X, y)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Get the coefficient representing the estimated yearly increase</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        estimated_yearly_increase <span class="op">=</span> model.coef_[<span class="dv">0</span>]</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> estimated_yearly_increase</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">#uses above funciton to create data frame</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    test <span class="op">=</span> query_climate_database(db_file, country, year_begin, year_end, month)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">    estimated_yearly_increase: Estimated yearly increase in temperature. This is the coefficient of a linear regression model.</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">    The linear regression model is fitted using the 'YEAR' column as the independent variable and the 'TEMP'</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">    column as the dependent variable.</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        X <span class="op">=</span> df[[<span class="st">"YEAR"</span>]]</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> df[<span class="st">"TEMP"</span>]</span>
 <span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#groups all the stations w same lattide and longitude together, then applies the regression</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> test.groupby([<span class="st">'LATITUDE'</span>, <span class="st">'LONGITUDE'</span>]).<span class="bu">apply</span>(estimate_yearly_increase).reset_index()</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Create a linear regression model</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        model <span class="op">=</span> LinearRegression()</span>
 <span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">#this gives us how many rows relate to each station</span></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    groups <span class="op">=</span> test.groupby([<span class="st">'LATITUDE'</span>, <span class="st">'LONGITUDE'</span>]).transform(<span class="st">'size'</span>)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Fit the model</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        model.fit(X, y)</span>
 <span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">#adds a size column</span></span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    result[<span class="st">"size"</span>] <span class="op">=</span> groups</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Get the coefficient representing the estimated yearly increase</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>        estimated_yearly_increase <span class="op">=</span> model.coef_[<span class="dv">0</span>]</span>
 <span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># filter out rows with a size less than min_obs</span></span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> result[result[<span class="st">'size'</span>] <span class="op">&gt;=</span> min_obs]</span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># merge the original data frame with the one that underwent linear regression</span></span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>    merged <span class="op">=</span> pd.merge(result, test, on<span class="op">=</span>[<span class="st">'LATITUDE'</span>, <span class="st">'LONGITUDE'</span>])</span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># rename columns</span></span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    merged.columns <span class="op">=</span> [<span class="st">"LATITUDE"</span>, <span class="st">"LONGITUDE"</span>, <span class="st">"Estimated Yearly Increase (C°)"</span>, <span class="st">"SIZE"</span>,</span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"NAME"</span>, <span class="st">"COUNTRY"</span>, <span class="st">"YEAR"</span>, <span class="st">"MONTH"</span>, <span class="st">"TEMP"</span>]</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> estimated_yearly_increase</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    <span class="co">#uses above funciton to create data frame</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    test <span class="op">=</span> query_climate_database(db_file, country, year_begin, year_end, month)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">#groups all the stations w same lattide and longitude together, then applies the regression</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> test.groupby([<span class="st">'LATITUDE'</span>, <span class="st">'LONGITUDE'</span>]).<span class="bu">apply</span>(estimate_yearly_increase).reset_index()</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    <span class="co">#this gives us how many rows relate to each station</span></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    groups <span class="op">=</span> test.groupby([<span class="st">'LATITUDE'</span>, <span class="st">'LONGITUDE'</span>]).transform(<span class="st">'size'</span>)</span>
 <span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># round estimated increase</span></span>
-<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    merged[<span class="st">'Estimated Yearly Increase (C°)'</span>] <span class="op">=</span> merged[<span class="st">'Estimated Yearly Increase (C°)'</span>].<span class="bu">round</span>(<span class="dv">4</span>)</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    <span class="co">#adds a size column</span></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    result[<span class="st">"size"</span>] <span class="op">=</span> groups</span>
 <span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create a scatter mapbox plot using plotly </span></span>
-<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> px.scatter_mapbox(merged,</span>
-<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>                            title<span class="op">=</span><span class="st">'Estimated Yearly Increase in Temperature'</span>,</span>
-<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>                            lat<span class="op">=</span><span class="st">'LATITUDE'</span>,</span>
-<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>                            lon<span class="op">=</span><span class="st">'LONGITUDE'</span>,</span>
-<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>                            color<span class="op">=</span><span class="st">'Estimated Yearly Increase (C°)'</span>,</span>
-<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>                            hover_name<span class="op">=</span><span class="st">'NAME'</span>,</span>
-<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>                            mapbox_style<span class="op">=</span><span class="st">"carto-positron"</span>)</span>
-<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># filter out rows with a size less than min_obs</span></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> result[result[<span class="st">'size'</span>] <span class="op">&gt;=</span> min_obs]</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># merge the original data frame with the one that underwent linear regression</span></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    merged <span class="op">=</span> pd.merge(result, test, on<span class="op">=</span>[<span class="st">'LATITUDE'</span>, <span class="st">'LONGITUDE'</span>])</span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># rename columns</span></span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>    merged.columns <span class="op">=</span> [<span class="st">"LATITUDE"</span>, <span class="st">"LONGITUDE"</span>, <span class="st">"Estimated Yearly Increase (C°)"</span>, <span class="st">"SIZE"</span>,</span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"NAME"</span>, <span class="st">"COUNTRY"</span>, <span class="st">"YEAR"</span>, <span class="st">"MONTH"</span>, <span class="st">"TEMP"</span>]</span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># round estimated increase</span></span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>    merged[<span class="st">'Estimated Yearly Increase (C°)'</span>] <span class="op">=</span> merged[<span class="st">'Estimated Yearly Increase (C°)'</span>].<span class="bu">round</span>(<span class="dv">4</span>)</span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create a scatter mapbox plot using plotly </span></span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> px.scatter_mapbox(merged,</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>                            title<span class="op">=</span><span class="st">'Estimated Yearly Increase in Temperature'</span>,</span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>                            lat<span class="op">=</span><span class="st">'LATITUDE'</span>,</span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>                            lon<span class="op">=</span><span class="st">'LONGITUDE'</span>,</span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>                            color<span class="op">=</span><span class="st">'Estimated Yearly Increase (C°)'</span>,</span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>                            hover_name<span class="op">=</span><span class="st">'NAME'</span>,</span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>                            mapbox_style<span class="op">=</span><span class="st">"carto-positron"</span>)</span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now test our function</p>
-<div id="84214984-4fe3-482e-b03f-d4c8ba88f03e" class="cell" data-tags="[]" data-execution_count="62">
+<div id="84214984-4fe3-482e-b03f-d4c8ba88f03e" class="cell" data-tags="[]" data-execution_count="192">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> px.colors.diverging.RdGy_r <span class="co"># choose a colormap</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> temperature_coefficient_plot(<span class="st">"temps.db"</span>, <span class="st">"India"</span>, <span class="dv">1980</span>, <span class="dv">2020</span>, <span class="dv">1</span>, </span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                                   min_obs <span class="op">=</span> <span class="dv">10</span>,</span>
@@ -631,12 +670,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="100%" height="545px" src="iframe_figures/figure_62.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="100%" height="545px" src="iframe_figures/figure_192.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
 <p>Now we have a geographic graph of India that shows the estiamted yearly increase in temperature for each station. This pulls data from 1980 to 2020 in the month of January</p>
 <p>Lets do this one more time for Mexico to ensure our code works correctly. This time we will set the years to be between 1999 and 2020 and for the month of February.</p>
-<div id="e5275603-21d4-40f6-ac46-9f7e5d83acc9" class="cell" data-tags="[]" data-execution_count="63">
+<div id="e5275603-21d4-40f6-ac46-9f7e5d83acc9" class="cell" data-tags="[]" data-execution_count="193">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>color_map <span class="op">=</span> px.colors.diverging.RdGy_r <span class="co"># choose a colormap</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>fig2 <span class="op">=</span> temperature_coefficient_plot(<span class="st">"temps.db"</span>, <span class="st">"Mexico"</span>, <span class="dv">1999</span>, <span class="dv">2020</span>, <span class="dv">2</span>, </span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                                   min_obs <span class="op">=</span> <span class="dv">2</span>,</span>
@@ -647,7 +686,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>fig2</span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#fig.show()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<iframe scrolling="no" width="100%" height="545px" src="iframe_figures/figure_63.html" frameborder="0" allowfullscreen=""></iframe>
+<iframe scrolling="no" width="100%" height="545px" src="iframe_figures/figure_193.html" frameborder="0" allowfullscreen=""></iframe>
 </div>
 </div>
 </section>
@@ -657,27 +696,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Our function will be called temp_for_year and take 4 arguments - db is the name of our database file. In this case, its “temps.db” - country is the name of the country we are inquiring about. - month is the month number we are inquring about (example: January is 1)</p>
 <p>It will use the query_climate_database to pull data for the specific country, for the given year, and for the given month. This isn’t a range of years, rather data from a specific year.</p>
 <p>For our boxplot, we need an x axis, which would be the month The y axis is the temp</p>
-<div id="8d966f48-c5cf-46b2-9a9c-e87092fb247a" class="cell" data-tags="[]" data-execution_count="64">
+<div id="8d966f48-c5cf-46b2-9a9c-e87092fb247a" class="cell" data-tags="[]" data-execution_count="106">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># box plot of temperature throughout entire country for a given month and year</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> temp_for_year(db, country, year, month):</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    table <span class="op">=</span> query_climate_database(db_file <span class="op">=</span> db,</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                       country <span class="op">=</span> country, </span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                       year_begin <span class="op">=</span> year,</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                       year_end <span class="op">=</span> year,</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>                       month <span class="op">=</span> month)</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> px.box(table,</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>             title <span class="op">=</span> <span class="ss">f"Temperature in </span><span class="sc">{</span>country<span class="sc">}</span><span class="ss"> for </span><span class="sc">{</span>year<span class="sc">}</span><span class="ss">"</span>,</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>             x <span class="op">=</span> <span class="st">"MONTH"</span>,</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>             y <span class="op">=</span> <span class="st">"TEMP"</span>,</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>             color <span class="op">=</span> <span class="st">"MONTH"</span>,</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>             width <span class="op">=</span> <span class="dv">600</span>,</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>             height <span class="op">=</span> <span class="dv">600</span>)</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Generate a box plot visualizing temperature distribution in a specific country for a given year and month.</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">    - db: SQLite database file containing climate data.</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">    - country: name of the country for which temperature data is visualized.</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">    - year: year for which temperature data is visualized.</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">    - month: month for which temperature data is visualized.</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">    fig: box plot displaying the distribution of temperatures for the specified country,</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">                                  year, and month. The plot is created using Plotly Express.</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    table <span class="op">=</span> query_climate_database(db_file <span class="op">=</span> db,</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>                       country <span class="op">=</span> country, </span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>                       year_begin <span class="op">=</span> year,</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>                       year_end <span class="op">=</span> year,</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>                       month <span class="op">=</span> month)</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> px.box(table,</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>             title <span class="op">=</span> <span class="ss">f"Temperature in </span><span class="sc">{</span>country<span class="sc">}</span><span class="ss"> for </span><span class="sc">{</span>year<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>             x <span class="op">=</span> <span class="st">"MONTH"</span>,</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>             y <span class="op">=</span> <span class="st">"TEMP"</span>,</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>             color <span class="op">=</span> <span class="st">"MONTH"</span>,</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>             width <span class="op">=</span> <span class="dv">600</span>,</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>             height <span class="op">=</span> <span class="dv">600</span>)</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now lets test our function</p>
 <div id="50f44473-3aec-492f-b58a-4a4ba080619e" class="cell" data-tags="[]" data-execution_count="65">
@@ -701,17 +756,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>comments throughout the function definition explain the code</p>
 <p>We will also import a new query function, called query_climate_database2. This takes 3 parameters: file, country, and year. The function outputs a data frame with the average temperatues across the given country for each calander month of the year.</p>
 <p>First, we will import query_climate_database2 and test it. Then we will define the function avg_temp_per_month that makes calls to the query_climate_database2 function.</p>
-<div id="dcca504a-1cab-43d3-8ea9-ecd85e4b4d09" class="cell" data-tags="[]" data-execution_count="66">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> climate_database <span class="im">import</span> query_climate_database2</span>
+<div id="dcca504a-1cab-43d3-8ea9-ecd85e4b4d09" class="cell" data-tags="[]" data-execution_count="157">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> climate_database <span class="im">import</span> query_climate_database</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> inspect</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(inspect.getsource(query_climate_database2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(inspect.getsource(query_climate_database))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>def query_climate_database2(db_file, country, year):
+    """
+    A new query a climate database to retrieve temperature data for a specific country, year range, and month.
+
+    Parameters:
+    - db_file: database file.
+    - country: name of the country for which climate data is requested.
+    - year: yearfor which temperature data is requested.
+
+    Returns:
+    pd: dataframe containing the monthly average temperature for the specified country and year.
+                  Columns include 'Month', 'ID', 'Average_Temp', and 'Country'.
+                  
+    """
     conn = sqlite3.connect(db_file)
     cursor = conn.cursor()
-    
-    
-    
     cursor.execute(f'SELECT C.Name, SUBSTR(T.ID,1,2) FROM temperatures T JOIN countries C WHERE C.Name="{country}" AND SUBSTR(T.ID,1,2) = C."FIPS 10-4"')  
 
     result = [cursor.fetchone() for i in range(1)]  # get just the first  result
@@ -861,44 +926,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>As we can see, the average temperature for each month in India for 1980 was calcuated.</p>
 <p>Now its time to write our new graphing function</p>
-<div id="4f3673f7-c1b7-4d7b-be49-4eace7d4ff79" class="cell" data-tags="[]" data-execution_count="72">
+<div id="4f3673f7-c1b7-4d7b-be49-4eace7d4ff79" class="cell" data-tags="[]" data-execution_count="143">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># now we can add our new graphing function</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> avg_temp_per_month(<span class="bu">file</span>, country1, country2, year):</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#uses query function for country 1</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    c1 <span class="op">=</span> query_climate_database2(db_file <span class="op">=</span> <span class="bu">file</span>,</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>                       country <span class="op">=</span> country1, </span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>                       year<span class="op">=</span> year)</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># uses query function for country 2</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    c2 <span class="op">=</span> query_climate_database2(db_file <span class="op">=</span> <span class="bu">file</span>,</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>                       country <span class="op">=</span> country2, </span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>                       year<span class="op">=</span> year)</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># places the data frame of country 1 ontop of the data frame of country 2 to make one long data frame</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    stacked <span class="op">=</span> pd.concat([c1, c2], ignore_index<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Generate a scatter plot comparing the average temperature in each month for two countries in a specific year.</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters:</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">    - file:  SQLite database file containing climate data.</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">    - country1: Name of the first country for temperature data comparison.</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">    - country2: Name of the second country for temperature data comparison.</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co">    - year: Year for which average temperature data is compared.</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co">    fig: Scatter plot displaying the average temperature in each month for two countries.</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">                                 The plot is created using Plotly Express (px.scatter).</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># graphs the data frame</span></span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> px.scatter(data_frame <span class="op">=</span> stacked,</span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>                 title<span class="op">=</span><span class="ss">f"Average Temp in each month for </span><span class="sc">{</span>country1<span class="sc">}</span><span class="ss"> vs </span><span class="sc">{</span>country2<span class="sc">}</span><span class="ss"> "</span>,</span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>                 x <span class="op">=</span> <span class="st">"Month"</span>,</span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>                 y <span class="op">=</span> <span class="st">"TEMP"</span>,</span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>                 color <span class="op">=</span> <span class="st">"TEMP"</span>,</span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>                 hover_name <span class="op">=</span> <span class="st">"TEMP"</span>,</span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>                 hover_data <span class="op">=</span> [<span class="st">"Month"</span>, <span class="st">"TEMP"</span>],</span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>                 <span class="co">#size = "Body Mass (g)",</span></span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>                 <span class="co">#size_max = 8,</span></span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>                 width <span class="op">=</span> <span class="dv">800</span>,</span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>                 height <span class="op">=</span> <span class="dv">500</span>,</span>
-<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>                 <span class="co">#opacity = 0.5</span></span>
-<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>                 facet_col <span class="op">=</span> <span class="st">"Country"</span></span>
-<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">#uses query function for country 1</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    c1 <span class="op">=</span> query_climate_database2(db_file <span class="op">=</span> <span class="bu">file</span>,</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>                       country <span class="op">=</span> country1, </span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>                       year<span class="op">=</span> year)</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># uses query function for country 2</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>    c2 <span class="op">=</span> query_climate_database2(db_file <span class="op">=</span> <span class="bu">file</span>,</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>                       country <span class="op">=</span> country2, </span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>                       year<span class="op">=</span> year)</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># places the data frame of country 1 ontop of the data frame of country 2 to make one long data frame</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>    stacked <span class="op">=</span> pd.concat([c1, c2], ignore_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># graphs the data frame</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> px.scatter(data_frame <span class="op">=</span> stacked,</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>                 title<span class="op">=</span><span class="ss">f"Average Temp in each month for </span><span class="sc">{</span>country1<span class="sc">}</span><span class="ss"> vs </span><span class="sc">{</span>country2<span class="sc">}</span><span class="ss"> "</span>,</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>                 x <span class="op">=</span> <span class="st">"Month"</span>,</span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>                 y <span class="op">=</span> <span class="st">"TEMP"</span>,</span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>                 color <span class="op">=</span> <span class="st">"TEMP"</span>,</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>                 hover_name <span class="op">=</span> <span class="st">"TEMP"</span>,</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>                 hover_data <span class="op">=</span> [<span class="st">"Month"</span>, <span class="st">"TEMP"</span>],</span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>                 <span class="co">#size = "Body Mass (g)",</span></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>                 <span class="co">#size_max = 8,</span></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>                 width <span class="op">=</span> <span class="dv">800</span>,</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>                 height <span class="op">=</span> <span class="dv">500</span>,</span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>                 <span class="co">#opacity = 0.5</span></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>                 facet_col <span class="op">=</span> <span class="st">"Country"</span></span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="eec3095e-74ff-497a-b25f-161dc0198416" class="cell" data-tags="[]" data-execution_count="73">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># now we can use the avg</span></span>
