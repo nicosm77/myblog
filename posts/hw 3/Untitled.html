@@ -192,7 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We are going to create a simple message bank using flask! This message bank will let users submit a message with their name, and view other’s messages!</p>
 <section id="step-1-install-packages" class="level3">
 <h3 class="anchored" data-anchor-id="step-1-install-packages">Step 1: Install Packages</h3>
-<div id="d08b2361-2bce-4646-8365-61b437be60fa" class="cell" data-tags="[]" data-execution_count="2">
+<div id="d08b2361-2bce-4646-8365-61b437be60fa" class="cell" data-tags="[]" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template, request, g</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> redirect, url_for, abort</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
@@ -203,7 +203,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-2-create-a-database-function-to-house-the-messages" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-create-a-database-function-to-house-the-messages">Step 2: Create a database function to house the messages</h3>
-<div id="b3df9cdc-ca7a-4c27-8cc9-ba9cad9a0e2a" class="cell" data-tags="[]" data-execution_count="3">
+<div id="b3df9cdc-ca7a-4c27-8cc9-ba9cad9a0e2a" class="cell" data-tags="[]" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_message_db():</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>     <span class="co"># attempt to return the existing message database connection from the global context (g)</span></span>
@@ -227,7 +227,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-3-create-a-database-function-to-house-the-messages" class="level3">
 <h3 class="anchored" data-anchor-id="step-3-create-a-database-function-to-house-the-messages">Step 3: Create a database function to house the messages</h3>
-<div id="1868ce27-20b6-4d4d-8cb3-8d1b67b6cad7" class="cell">
+<div id="1868ce27-20b6-4d4d-8cb3-8d1b67b6cad7" class="cell" data-tags="[]" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> insert_message(request):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract the message and handle from the request</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    message <span class="op">=</span> request.form.get(<span class="st">"message"</span>)</span>
