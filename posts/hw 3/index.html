@@ -409,19 +409,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-6-reviewing-submit.html" class="level3">
 <h3 class="anchored" data-anchor-id="step-6-reviewing-submit.html">Step 6: Reviewing submit.html</h3>
-<p>{% extends ‘base.html’ %}</p>
-{% block header %}
-<h1 style="color: black; font-family: Cursive;">
-{% block title %}Put down your thoughts here!{% endblock %}
-</h1>
-<p>{% endblock %}</p>
-{% block content %}
-<form method="post">
-<label for="message">Your message here:</label> <input type="text" name="message" id="message"> <br> <label for="name">Name/Handle:</label> <input type="text" name="name" id="name"> <br> <input type="submit" value="Submit message!">
-</form>
-<p>{% if name %} <br> Thanks {{ name}} for the message! To submit another message, hit “Submit a message” above! {% endif %}</p>
-<p>{% if error %} <br> Please resubmit! {% endif %}</p>
-<p>{% endblock %}</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/04778fa7-898d-45d9-b335-83a1342931d2-1-4878f51d-9c08-4f9a-aeee-e4d1fe60c72e.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
 <p>Submit.html starts from extending from base.html. Base.html serves as a header for submit.html, with links to submit a mssage and view a message. base.html also includes the title of the wbesite.</p>
 <p>The block header specifics the color of the text and the font (black and cursive). The header says “Put down your thoughts here!”</p>
 <p>The block content is where a user can submit their message. It’s in the form “post”. It first asks for “Your message here” and has an input spot. The input takes in text as a “message”. The next text box is for “Name/Handle”. Under this is another input spot. This input spot also takes in text as a “name”. Then we have another input of tupe “submit”. This is just a submit button labeled with “Submit Message!” That ends the form.</p>
