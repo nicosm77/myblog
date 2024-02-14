@@ -192,7 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We are going to create a simple message bank using flask! This message bank will let users submit a message with their name, and view other’s messages!</p>
 <section id="step-1-install-packages" class="level3">
 <h3 class="anchored" data-anchor-id="step-1-install-packages">Step 1: Install Packages</h3>
-<div id="d08b2361-2bce-4646-8365-61b437be60fa" class="cell" data-tags="[]" data-execution_count="21">
+<div id="d08b2361-2bce-4646-8365-61b437be60fa" class="cell" data-tags="[]" data-execution_count="36">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, render_template, request, g</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask <span class="im">import</span> redirect, url_for, abort</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
@@ -203,7 +203,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-2-create-a-database-function-to-house-the-messages" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-create-a-database-function-to-house-the-messages">Step 2: Create a database function to house the messages</h3>
-<div id="b3df9cdc-ca7a-4c27-8cc9-ba9cad9a0e2a" class="cell" data-tags="[]" data-execution_count="22">
+<div id="b3df9cdc-ca7a-4c27-8cc9-ba9cad9a0e2a" class="cell" data-tags="[]" data-execution_count="37">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_message_db():</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Attempts to return the existing message database connection.</span></span>
@@ -241,7 +241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-3-create-a-database-function-to-house-the-messages" class="level3">
 <h3 class="anchored" data-anchor-id="step-3-create-a-database-function-to-house-the-messages">Step 3: Create a database function to house the messages</h3>
-<div id="1868ce27-20b6-4d4d-8cb3-8d1b67b6cad7" class="cell" data-tags="[]" data-execution_count="23">
+<div id="1868ce27-20b6-4d4d-8cb3-8d1b67b6cad7" class="cell" data-tags="[]" data-execution_count="38">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> insert_message(request):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract the message and handle from the request</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
@@ -290,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="step-4-create-a-function-to-generate-random-messages-from-the-database" class="level3">
 <h3 class="anchored" data-anchor-id="step-4-create-a-function-to-generate-random-messages-from-the-database">Step 4: Create a function to generate random messages from the database</h3>
-<div id="397bd2ee-e63d-4035-8b2d-a2a6bd32ff93" class="cell" data-tags="[]" data-execution_count="24">
+<div id="397bd2ee-e63d-4035-8b2d-a2a6bd32ff93" class="cell" data-tags="[]" data-execution_count="39">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generates n random mesages</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> random_messages(n):</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
@@ -331,7 +331,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-5-create-the-decorators." class="level3">
 <h3 class="anchored" data-anchor-id="step-5-create-the-decorators.">Step 5: Create the decorators.</h3>
 <p>Decorators in are functions that use URLs to output specific things. Using the “@” symbol, decorators specifify what will come after the .com in a URL. Then, it uses a function to run code for when the URL is at the specified point.</p>
-<div id="2e6395e1-f388-4bf7-a640-4870496335d3" class="cell" data-tags="[]" data-execution_count="26">
+<div id="2e6395e1-f388-4bf7-a640-4870496335d3" class="cell" data-tags="[]" data-execution_count="40">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># www.google.com/</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/"</span>) <span class="co"># decorators</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> render_base():</span>
@@ -348,7 +348,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># base.html gives us the header visible at all times while on the website</span></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> render_template(<span class="st">"base.html"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="2c16c98a-370d-4142-90e4-4a9846e71d3e" class="cell" data-tags="[]" data-execution_count="27">
+<div id="2c16c98a-370d-4142-90e4-4a9846e71d3e" class="cell" data-tags="[]" data-execution_count="41">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># route for the submit page</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/submit/"</span>, methods<span class="op">=</span>[<span class="st">'POST'</span>, <span class="st">'GET'</span>])</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> submit():</span>
@@ -372,7 +372,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        <span class="co"># render the submit template, thanking the person for their messaage</span></span>
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> render_template(<span class="st">"submit.html"</span>,message <span class="op">=</span> message, name <span class="op">=</span> name )  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="8a3199d1-3cff-45e1-b70f-53f1480e61a0" class="cell" data-tags="[]" data-execution_count="28">
+<div id="8a3199d1-3cff-45e1-b70f-53f1480e61a0" class="cell" data-tags="[]" data-execution_count="42">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/view/"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> view():</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
@@ -394,7 +394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># if no messages are present, it will render and empty view page</span></span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>         <span class="cf">return</span> render_template(<span class="st">"view.html"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="28ab6825-e163-4bae-b1ad-0158f673862e" class="cell" data-tags="[]" data-execution_count="29">
+<div id="28ab6825-e163-4bae-b1ad-0158f673862e" class="cell" data-tags="[]" data-execution_count="43">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a> <span class="co"># route of main page</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">"/main/"</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> render_main():</span>
