@@ -600,6 +600,10 @@ def advance_time_jax(u, epsilon):
 <section id="step-6-summary" class="level3">
 <h3 class="anchored" data-anchor-id="step-6-summary">Step 6: Summary</h3>
 <p>We can see that each method showed major speed increases. The final method, jax, took less than 0.1 seconds - a huge improvment to our original 40 second matrix multiplcation method.</p>
+</section>
+<section id="step-7-comparisons" class="level3">
+<h3 class="anchored" data-anchor-id="step-7-comparisons">Step 7: Comparisons</h3>
+<p>Matrix multiplication was the first method we used. It was the simplest to implement since the majority of the code was provided to us in the instructions. The method was the slowest to run, taking about 40 seconds. When I was testing I noticed this code took sometiems taking even longer. The second method was with sparse matrixes. This method was much faster, taking slightly less than 4 seconds. This was 10x faster than the prior method! This implementation was fairly simple to code as well. The third method was with direct operation and used some differential equations. This was also significantly faster, taking less that 1 second to run. The final and fastess method was simulated using jax. This was super fast, taking only 0.08 seconds to run. The fourth method demonstrated how efficent jax is, and after the homework, I woudld recommend anyone to default to the jax methods when running similar projects.</p>
 
 
 </section>
