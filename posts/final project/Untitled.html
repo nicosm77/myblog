@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.541">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Nico Morrone, Ethan Buntaran, Arvin Hosseini">
+
+<title>myblog2 - Final Project: Minesweeper</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">myblog2</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"> <i class="bi bi-twitter" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Final Project: Minesweeper</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">week 10</div>
+                <div class="quarto-category">Final</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Nico Morrone, Ethan Buntaran, Arvin Hosseini </p>
+            </div>
+    </div>
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="introduction---add-flowchart-of-tikinter-website-buttons" class="level1">
+<h1>Introduction - add flowchart of tikinter website buttons</h1>
+<p>For our project, we created a Minesweeper game using Pygame and Tkinter. This is hosted on github: https://github.com/nicosm77/minesweeper-project</p>
+<p>Minesweeper is a single-player game played on a square grid, where each tile can either contain a hidden mine or be safe. The objective is to uncover all the safe cells without hitting any mines. Players achieve this by clicking on tiles, revealing numbers that indicate the number of neighboring mines. By using these numbers strategically, players must figure out the locations of mines and mark them with flags.</p>
+<p>Key elements of Minesweeper:</p>
+<p>Board: The game board consists of a grid of tiles. The size of the board and the number of mines varies based on difficulty.</p>
+<p>Numbers: Uncovering a cell reveals a number, indicating how many mines are adjacent to that cell.</p>
+<p>Mines: Some cells contain hidden mines. If a player uncovers a mine, the game ends, and the mine detonates.</p>
+<p>Flags: Players can mark cells they suspect contain mines with flags to avoid accidental clicks.</p>
+<p>Winning: The game is won when all safe cells are uncovered. Players lose if they click on a mine.</p>
+<p>–</p>
+<p>Once running the code, a Tkinter window pops up prompting the user with four options: New Game, View Leaderboard, View Plots, and Quit.</p>
+<p><u> New Game</u> allows the user to start a new game. Clicking this button opens a new window offering 4 more options: Very Easy, Easy, Medium, and Hard. These options correspond to the size of the Minesweeper board. Clicking one fo these options will start a Pygame Minesweeper game.</p>
+<p><u> View Leaderboard</u> shows previous game results using a database. Upon winning a game, the user is prompted to unput their name so their game time can be added to the leaderboard</p>
+<p><u> View Plots</u> shows the Plotly plots that display game stats. There are four plots in total: Average compeletion time by difficulty, Completion time by player, Average completion time per player, and Distribution of players by difficulty level.</p>
+<p>Below is a visualization of the start page.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Untitled_files/figure-html/98046c26-2bc5-478d-81cd-e3a4dbc34dd8-1-9610984a-8bc1-4482-badf-d9255926064f.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<section id="playing-a-game" class="level3">
+<h3 class="anchored" data-anchor-id="playing-a-game">Playing a Game</h3>
+<p>Let’s assume our user selected “easy” difficulty. This creates a 10 x 10 board with a 0.1 probability that each tile will have a bomb. The start board is shown below:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Untitled_files/figure-html/ab503548-bbf3-4821-9b89-d44a87b18918-1-c6c38d00-d246-4291-9acb-24b0cf7e13b9.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>The user the left clicks on squares to “dig” and right clicks on squares to place a flag. The game continues until either a bomb is hit, or all tiles are cleared. An example of a partially completed board is below:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Untitled_files/figure-html/742c7054-ceae-4c47-9f00-cc00d9c9a62f-1-8c45b27f-17c8-4655-a0a1-74a37291b3f1.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>Losing yields this screen:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Untitled_files/figure-html/5abd17be-2351-4302-98b5-48ccde51af8f-1-8605574f-91fe-4a14-8d23-79c080d63637.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>While winning allows the user to input their name for the leaderboard.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Untitled_files/figure-html/90e29a7a-4c47-4175-b537-d14212592185-1-4fc7d2f5-7385-42fb-8a47-18100d20fb98.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+</section>
+<section id="viewing-leaderboard" class="level3">
+<h3 class="anchored" data-anchor-id="viewing-leaderboard">Viewing Leaderboard</h3>
+<p>Clicking the View Leaderboard button shows data from a SQLite databse that shows previous game results.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Untitled_files/figure-html/f8c34046-cee9-46bc-b196-37c913543ff6-1-f9a3d87f-d439-4a15-83fe-37804df4b457.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+</section>
+<section id="viewing-plots" class="level3">
+<h3 class="anchored" data-anchor-id="viewing-plots">Viewing Plots</h3>
+<p>Clicking the View Plots button shows Plotly plots that give various game stats. The data shown is taken from the SQlite databse.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Untitled_files/figure-html/ac322f42-f1a1-48f4-acfc-d365c2750bc7-1-a4a2e778-9fb2-469e-ad6b-b3cb411796e6.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Untitled_files/figure-html/c7e89ede-406e-4b74-b807-1ae72f51582b-1-0b70be1a-aa60-48cd-9012-6a94c177baff.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="overview-of-game-code" class="level1">
+<h1>Overview of Game Code</h1>
+<p>Now that we understand the function of our project, let’s take a look at how it all works. The code is split up into several files. We will start by giving an overview of all the files used to make the pygame Minesweeper game itself. We will later discuss the code for the database and plots.</p>
+<section id="tile.py" class="level3">
+<h3 class="anchored" data-anchor-id="tile.py">Tile.py</h3>
+<p>Tile.py defines the tile_class. This class is used for each individual tile in the larger pygame board. Each blue square is a tile. Each tile can have 4 different states, unclicked, cleared, flagged, and bombed.</p>
+<p>The below images show the states. Blue tiles are unlicked, the numbered/white tiles are cleared, the flag is flagged, and the bomb is bombed.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Untitled_files/figure-html/3933ba10-dbdb-4ce1-b763-b54d17d889d1-1-e7c90b19-26cc-4f00-9747-c0897eb1f591.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Untitled_files/figure-html/dfee0ecf-4595-4f82-890c-5b4be90ea8d8-1-05e300e2-c5ac-4131-8083-791dd9d52611.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+</section>
+<section id="board.py" class="level3">
+<h3 class="anchored" data-anchor-id="board.py">Board.py</h3>
+<p>Board.py establishes the board class. This class pulls tiles from the tile class and puts them together to create a square board where the user plays on. The board class starts by setting the difficulty which is given by the user: very easy, easy, medium, and hard. Each level has its own board dimensions (size) and probability of each tile having a bomb. After establishing the difficulty, the class then creates the board itself. The code for setting the board is shown below</p>
+<div id="aa6d17d7-9853-42d2-8323-762d9b0bbdbd" class="cell" data-tags="[]" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> setboard(<span class="va">self</span>):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.board <span class="op">=</span> []</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> row <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.size[<span class="dv">0</span>]):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>            row <span class="op">=</span> []</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> col <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.size[<span class="dv">1</span>]):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                hasbomb <span class="op">=</span> random() <span class="op">&lt;</span> <span class="va">self</span>.prob <span class="co"># of the random number is less than the probability, </span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                                            <span class="co"># this will read true and a bomb will be placed there</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                                            <span class="co"># otherwise will be false and no bomb will be placed there</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> ( <span class="kw">not</span> hasbomb): <span class="co"># if tile doesnt have a bomb</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                    <span class="va">self</span>.numberofnonbombs <span class="op">=</span> <span class="va">self</span>.numberofnonbombs <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                    </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                tile <span class="op">=</span> tile_class(hasbomb) <span class="co"># sets the tile using tile class initiliazer</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>                row.append(tile)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.board.append(row)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.setneighbors()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The function uses nested loops to iterate through the rows and columns of the board, generating a random number for each tile. If the random number is less than the specified probability, a bomb is placed on that tile; otherwise, no bomb is placed. The method also keeps track of the number of non-bomb tiles. Each tile is represented by an instance of a class called tile_class, and the board is a two-dimensional list containing these tile instances. Finally, the method calls another method named setneighbors to establish relationships between neighboring tiles.</p>
+</section>
+<section id="minesweeper.py" class="level3">
+<h3 class="anchored" data-anchor-id="minesweeper.py">Minesweeper.py</h3>
+<p>Minesweeper.py establishes the minesweeper class which is responsible for most of the functionality of the game. Here’s a summary of the key components:</p>
+<p>The minesweeper class is initialized with a game board (board), screen size (screensize), and a leaderboard (leaderboard). The tile size is set based on the game’s difficulty level, affecting the overall size of the game window. Images for different game elements (e.g., bombs, flags, empty blocks) are loaded from the “images” directory and scaled to the tile size. The game loop runs continuously until the game is won or lost. It handles events such as mouse clicks, updates the display, and checks for game-ending conditions. Mouse clicks are processed to determine the tile clicked and whether it was a left or right click. The corresponding action is then passed to the game board. The createboard function renders the current state of the game board on the Pygame window, using images based on the state of each tile. If the game is won, a window prompts the user to enter their username for the leaderboard. If the game is lost, unclicked tiles are revealed, and a message box informs the player of their loss. The submit method is called when the user enters their name after winning the game. It submits the player’s score (board size and time taken) to the leaderboard.</p>
+<p>The initializer is written below. This shows how the pygame window and the size of each tile is scaled to properly fit within the baord size and user’s computer</p>
+<div id="105bc2fc-3ead-43a5-abae-1c9c75adff78" class="cell" data-tags="[]" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, board, screensize, leaderboard):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.board <span class="op">=</span> board</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.screensize <span class="op">=</span> screensize</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.leaderboard <span class="op">=</span> leaderboard</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        difficulty <span class="op">=</span> board.difficulty</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (difficulty <span class="op">==</span> <span class="st">"very easy"</span>):</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.tilesize <span class="op">=</span> screensize[<span class="dv">0</span>]<span class="op">//</span><span class="dv">5</span> , screensize[<span class="dv">1</span>]<span class="op">//</span><span class="dv">5</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> (difficulty <span class="op">==</span> <span class="st">"easy"</span>):</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.tilesize <span class="op">=</span> screensize[<span class="dv">0</span>]<span class="op">//</span><span class="dv">10</span> , screensize[<span class="dv">1</span>]<span class="op">//</span><span class="dv">10</span>  </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> (difficulty <span class="op">==</span> <span class="st">"medium"</span>):</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.tilesize <span class="op">=</span> screensize[<span class="dv">0</span>]<span class="op">//</span><span class="dv">15</span> , screensize[<span class="dv">1</span>]<span class="op">//</span><span class="dv">15</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> (difficulty <span class="op">==</span> <span class="st">"hard"</span>):</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.tilesize <span class="op">=</span> screensize[<span class="dv">0</span>]<span class="op">//</span><span class="dv">20</span> , screensize[<span class="dv">1</span>]<span class="op">//</span><span class="dv">20</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.loadimages()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Below are all the images that are loaded into our Minesweeper game using the loadimages() function.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Untitled_files/figure-html/4b80cc57-0aaa-4cba-b0f7-2dfb3c12140c-1-7be6fbbd-4876-43d1-a622-77fc035c25b5.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="overview-of-leaderboard-code" class="level1">
+<h1>Overview of Leaderboard Code</h1>
+<p>The leaderboard uses sqlite3 to create a database has 3 columns: boardsize, time, and name. Each time a user wins a game, they’ll be prompted to enter their name. Then, their boardsize, time it took to finish the game, and user inputted name is uploaded to the database. This database is them visualized whenever the user hits the “View Leaderboard” button. This is shown below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Untitled_files/figure-html/40131205-cf7e-4d2f-9c24-bb1f22739905-1-d079bad1-f56e-4618-a6a6-ada17cba7d85.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+</section>
+<section id="overview-of-plots-code" class="level1">
+<h1>Overview of Plots Code</h1>
+<p>To plot game stats, we use Plotly. The data for these plots come from the database established above. An example is shown below.</p>
+<div id="e6ffa661-822e-473a-99f2-c6aeba7dc311" class="cell" data-tags="[]" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> visualize_avg_completion_time(leaderboard_df):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Visualize average completion time for each board size using a bar chart.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filter leaderboard data for the four specified board sizes</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    leaderboard_df <span class="op">=</span> leaderboard_df[leaderboard_df[<span class="st">'boardsize'</span>].isin([<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>])]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    avg_time_df <span class="op">=</span> leaderboard_df.groupby(<span class="st">'boardsize'</span>)[<span class="st">'time'</span>].mean().reset_index()</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    avg_time_df[<span class="st">'boardsize'</span>] <span class="op">=</span> avg_time_df[<span class="st">'boardsize'</span>].<span class="bu">map</span>(board_size_mapping)  <span class="co"># Map board sizes to difficulty levels</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> px.bar(avg_time_df, x<span class="op">=</span><span class="st">'boardsize'</span>, y<span class="op">=</span><span class="st">'time'</span>, title<span class="op">=</span><span class="st">'Average Completion Time by Difficulty Level'</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Untitled_files/figure-html/705068a0-aa17-4ad5-b901-d58b53930fc1-1-0b4a4161-c1ad-493b-b0fb-5cccccd7e1af.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>This is accessed whenever the user hits the “View Plots” button. The plots are then shown in the console running the code.</p>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Our Minesweeper project uses Pygame, Tkinter, and plotly to create an interactive minesweeper game with a functional leaderboard and game stats plots. Our game has multiple difficulties for players to choose from, and interactive plots for players to understand their progress and how they can improve their game. Our project is perfefctly ethical. Since minesweeper is a public</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      return note.innerHTML;
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
