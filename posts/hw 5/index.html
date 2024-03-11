@@ -192,7 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We will teach a machine learning algorithm to distinguish between pictures of dogs and pictures of cats. To do this, we will use tensorflow and keras. We will test several methods to see which method is the most accurate.</p>
 <section id="step-1-importing-necessary-packages-to-use-in-the-project" class="level3">
 <h3 class="anchored" data-anchor-id="step-1-importing-necessary-packages-to-use-in-the-project">Step 1: Importing necessary packages to use in the project</h3>
-<div id="70b1fee2-2e28-45b8-9876-0ba6ffef64b8" class="cell" data-tags="[]" data-execution_count="7">
+<div id="70b1fee2-2e28-45b8-9876-0ba6ffef64b8" class="cell" data-tags="[]" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># importing necessary packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os  </span>
@@ -220,7 +220,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="step-2-import-data" class="level3">
 <h3 class="anchored" data-anchor-id="step-2-import-data">Step 2: Import Data</h3>
 <p>We’ll use a sample data set from Kaggle that contains labeled images of cats and dogs. Its imported below and split between train data set, validation data set, and test data set.</p>
-<div id="a579e0af-7531-4e39-b7c9-c689bedf8381" class="cell" data-tags="[]" data-execution_count="8">
+<div id="a579e0af-7531-4e39-b7c9-c689bedf8381" class="cell" data-tags="[]" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># creates our training, validation, and testing data sets</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>train_ds, validation_ds, test_ds <span class="op">=</span> tfds.load(</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cats_vs_dogs"</span>,</span>
@@ -240,7 +240,7 @@ Number of test samples: 2326</code></pre>
 </div>
 <p>From this we see how our data was split up!</p>
 <p>Now, we will resize our data using the next two code blocks. The dataset contains images of different sizes, so we resize them to a fixed size of 150x150.</p>
-<div id="483f5b0b-6645-4c8b-a335-2905bb7b51dc" class="cell" data-tags="[]" data-execution_count="9">
+<div id="483f5b0b-6645-4c8b-a335-2905bb7b51dc" class="cell" data-tags="[]" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># resizing our data sets</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>resize_fn <span class="op">=</span> keras.layers.Resizing(<span class="dv">150</span>, <span class="dv">150</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -248,7 +248,7 @@ Number of test samples: 2326</code></pre>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>validation_ds <span class="op">=</span> validation_ds.<span class="bu">map</span>(<span class="kw">lambda</span> x, y: (resize_fn(x), y)) <span class="co"># using lambda function to resize the validation_ds code</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>test_ds <span class="op">=</span> test_ds.<span class="bu">map</span>(<span class="kw">lambda</span> x, y: (resize_fn(x), y)) <span class="co"># using lambda function to resize teh test_ds code</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="12664137-7178-49fb-bed2-77f34640731d" class="cell" data-tags="[]" data-execution_count="10">
+<div id="12664137-7178-49fb-bed2-77f34640731d" class="cell" data-tags="[]" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow <span class="im">import</span> data <span class="im">as</span> tf_data</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>batch_size <span class="op">=</span> <span class="dv">64</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -260,7 +260,7 @@ Number of test samples: 2326</code></pre>
 <section id="step-3-visualize-some-data" class="level3">
 <h3 class="anchored" data-anchor-id="step-3-visualize-some-data">Step 3: Visualize some data</h3>
 <p>Below we have a function to vidualize random images from the data set. It will generate 3 random images of cats, and 3 random images of dogs. We will use matplotlib to visualize the images from the given data</p>
-<div id="354b6a9c-9797-4217-b90b-3580c0c78b81" class="cell" data-tags="[]" data-execution_count="11">
+<div id="354b6a9c-9797-4217-b90b-3580c0c78b81" class="cell" data-tags="[]" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># writing a function to randomly visualize 3 images of cats and 3 images of dogs</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#show 3 cats, 3  dogs</span></span>
@@ -275,20 +275,22 @@ Number of test samples: 2326</code></pre>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">int</span>(lbl[i]) <span class="op">==</span> <span class="dv">1</span> <span class="kw">and</span> dogs <span class="op">&lt;</span> <span class="dv">3</span>:  <span class="co"># repeats while the number of dogs pulled is less than 3</span></span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                ax <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, dogs<span class="op">+</span><span class="dv">4</span>) </span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                plt.imshow(img[i].numpy().astype(<span class="st">"uint8"</span>))</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                plt.axis(<span class="st">"off"</span>) <span class="co"># removes axis numbering</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                dogs <span class="op">=</span> dogs <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">int</span>(lbl[i]) <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> cats <span class="op">&lt;</span> <span class="dv">3</span>: <span class="co"># repeates while the number of cats pulled is less than 3</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>                ax <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, cats<span class="op">+</span><span class="dv">1</span>) </span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>                plt.imshow(img[i].numpy().astype(<span class="st">"uint8"</span>))</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>                plt.axis(<span class="st">"off"</span>) <span class="co"># removes axis numbering</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>                cats <span class="op">=</span> cats <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>          </span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                plt.title(<span class="st">"dog"</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                plt.axis(<span class="st">"off"</span>) <span class="co"># removes axis numbering</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>                dogs <span class="op">=</span> dogs <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">int</span>(lbl[i]) <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> cats <span class="op">&lt;</span> <span class="dv">3</span>: <span class="co"># repeates while the number of cats pulled is less than 3</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>                ax <span class="op">=</span> plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, cats<span class="op">+</span><span class="dv">1</span>) </span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>                plt.imshow(img[i].numpy().astype(<span class="st">"uint8"</span>))</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>                plt.title(<span class="st">"cat"</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>                plt.axis(<span class="st">"off"</span>) <span class="co"># removes axis numbering</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>                cats <span class="op">=</span> cats <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>          </span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="d39734bc-c7f0-4a0f-8d81-f66f3dd42bcd" class="cell" data-tags="[]" data-execution_count="12">
+<div id="d39734bc-c7f0-4a0f-8d81-f66f3dd42bcd" class="cell" data-tags="[]" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>visualize(train_ds) <span class="co"># use the above function</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>2024-03-03 16:41:06.283929: W tensorflow/core/kernels/data/cache_dataset_ops.cc:858] The calling iterator did not fully read the dataset being cached. In order to avoid unexpected truncation of the dataset, the partially cached contents of the dataset  will be discarded. This can happen if you have an input pipeline similar to `dataset.cache().take(k).repeat()`. You should use `dataset.take(k).cache().repeat()` instead.</code></pre>
+<pre><code>2024-03-10 17:24:51.820278: W tensorflow/core/kernels/data/cache_dataset_ops.cc:858] The calling iterator did not fully read the dataset being cached. In order to avoid unexpected truncation of the dataset, the partially cached contents of the dataset  will be discarded. This can happen if you have an input pipeline similar to `dataset.cache().take(k).repeat()`. You should use `dataset.take(k).cache().repeat()` instead.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
