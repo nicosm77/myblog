@@ -273,7 +273,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Now that we understand the function of our project, let’s take a look at how it all works. The code is split up into several files. We will start by giving an overview of all the files used to make the pygame Minesweeper game itself. We will later discuss the code for the database and plots.</p>
 <section id="tile.py" class="level3">
 <h3 class="anchored" data-anchor-id="tile.py">Tile.py</h3>
-<p>Tile.py defines the tile_class. This class is used for each individual tile in the larger pygame board. Each blue square is a tile. Each tile can have 4 different states, unclicked, cleared, flagged, and bombed.</p>
+<p>Tile.py defines the tile_class. This class is used for each individual tile in the larger pygame board. Each blue square is a tile. Each tile can have 4 different states, unclicked, cleared, flagged, and bombed. The tile class has getters and setters defined for each state, so we can easily access whether a tile is cleared or not, has a bomb, or is flagged by the user. These getters were extremely useful when making the other classes. For example, using the getter for if a tile has a bomb or not was used to check the number of neighboring tiles with bombs. This was then used to number each tile with the number of bombs neighboring it.</p>
 <p>The below images show the states. Blue tiles are unlicked, the numbered/white tiles are cleared, the flag is flagged, and the bomb is bombed.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -355,7 +355,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="overview-of-plots-code" class="level1">
 <h1>Overview of Plots Code</h1>
-<p>To plot game stats, we use Plotly. The data for these plots come from the database established above. An example is shown below.</p>
+<p>To plot game stats, we use Plotly. The data for these plots come from the database established above. This is all found within the Plots.py file. The goal of the plots is to track player progress throughout different games. Progress can easily be visualized with average completion time. Competitions can also be created using the graph showing average completion time per player. One of our extra goals was to use the plots to give the players hints on how to improve. For exampke, if the player was struggling to finish a hard gamemode in under 1 minute, we would recommend playing medium gamemodes with a timer of 45 seconds to get adjusted to playing fast. While we weren’t successful in adding such game hints to our final project, the plotly plots still have functionality for the user.</p>
+<p>An example is shown below.</p>
 <div id="e6ffa661-822e-473a-99f2-c6aeba7dc311" class="cell" data-tags="[]" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> visualize_avg_completion_time(leaderboard_df):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
