@@ -243,7 +243,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="viewing-leaderboard" class="level3">
 <h3 class="anchored" data-anchor-id="viewing-leaderboard">Viewing Leaderboard</h3>
-<p>Clicking the View Leaderboard button shows data from a SQLite databse that shows previous game results.</p>
+<p>Clicking the View Leaderboard button shows data from a SQLite databse that shows previous game results. There is also a slider bar (not seen in this image) to scroll through the leaderboard when there are more games played.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="index_files/figure-html/f8c34046-cee9-46bc-b196-37c913543ff6-1-f9a3d87f-d439-4a15-83fe-37804df4b457.png" class="img-fluid figure-img"></p>
@@ -343,6 +343,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
+<section id="handling-user-clicks" class="level1">
+<h1>Handling User Clicks</h1>
+<p>Defined in the Board class, the function userclicked handles all user-clicks during a Minesweeper game. There are several if statements used throguhout the function to handle clicking on certain attributes in the game. The parameter, tile, is the location of where the click occured.</p>
+<p>Going through the if statements, if the player right clickes on an empty square, the flag is tollged using toggle.flag(). This means if a flag is not present on the title, a flag will appear. If there is already a flag on the tile, then the flag will disappear. If the user attempts to left click on a flag, nothing will happen. A player must first right click on a flag to remove it before left clicking on the tile. Next, if the user left clicks on a tile that is hiding a bomb, self.lost will be assigned true - giving the user the lose page and ending the game. If the tile doesn’t have a bomb, the variable numberclicked is incremented by one. Then, all surrounding tiles that don’t have a bomb will also be automatically revealed to the player.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/73f221f4-b6fd-4dc4-9626-f5e82c208ff8-1-dbcae8fb-f566-41c7-8de0-f0e815e16919.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/a104b5c5-8d6d-494b-93ce-e3c425e9840a-1-f42a5de9-0e04-49f1-81ed-70d2d5409a62.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+</section>
 <section id="overview-of-leaderboard-code" class="level1">
 <h1>Overview of Leaderboard Code</h1>
 <p>The leaderboard uses sqlite3 to create a database has 3 columns: boardsize, time, and name. Each time a user wins a game, they’ll be prompted to enter their name. Then, their boardsize, time it took to finish the game, and user inputted name is uploaded to the database. This database is them visualized whenever the user hits the “View Leaderboard” button. This is shown below.</p>
@@ -376,6 +393,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 <p>This is accessed whenever the user hits the “View Plots” button. The plots are then shown in the console running the code.</p>
+</section>
+<section id="overview-of-menu-page-code" class="level1">
+<h1>Overview of Menu Page code</h1>
+<p>While the game is running, the main menu page will be open on the users desktop. This uses Tkinter.</p>
+<p>Below, each button is shown in the code. There are buttons for New Game, View Leaderboard, View Plots, and Quit. Each button has a unique command, such as playgame, view_leaderboard, view_plots, and quit.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/2d84ef55-188b-4913-8800-5b5acbeed160-1-b9adaca9-8c4d-42db-b7d3-2c064a5c61dd.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<p>For example, if the View Leaderboard button is hit, the function view_leaderboard is called. This function is shown below.</p>
+<p>It starts by closing the main menu screen to decluter the user’s screen. The main menu window is opened back up once the user closes the leaderboard window. The leaderboard window just shows a simple databse of recent game plays. This is seen earlier in the blog.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/f7a97ec4-94fc-4a88-9718-817a0bd4e743-1-453bd610-608e-43aa-9e10-1fc561450213.png" class="img-fluid figure-img"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
 </section>
 <section id="conclusion" class="level1">
 <h1>Conclusion</h1>
